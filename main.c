@@ -22,7 +22,7 @@ int main(int argc, char** argv) {
         "RIFF",
         36,
         "WAVE",
-        "fmt\x20",
+        "fmt\x20", //  \x20 represents the end of header
         16,
         1,
         2,
