@@ -6,6 +6,8 @@
 #include "writeWav.h"
 
 int main(int argc, char** argv) {
+    int samples = 100;
+
     WavHeader h = {
         "RIFF",
         36,
@@ -19,20 +21,18 @@ int main(int argc, char** argv) {
         2,
         16,
         "data",
-        100
+        samples
     };
 
     char* file_name = "out/a.out.wav";
 
-    int data_len = 100;
+    int16_t* d = (int16_t*)malloc(samples * sizeof(int16_t));
 
-    int16_t* d = (int16_t*)malloc(data_len * sizeof(int16_t));
-
-    for(int i=0; i<data_len; i++) {
+    for(int i=0; i<samples; i++) {
         d[i] = 0x8FFF;
     }
 
-    int flag = flag = writeWav(h, file_name, d, data_len);
+    int flag = flag = writeWav(h, file_name, d, samples);
 
     free(d);
 
