@@ -6,7 +6,7 @@
 #include "wav_header.h"
 
 int writeWav(
-    WavHeader* h,
+    WavHeader h,
     char* file_name,
     int16_t* data
 );
