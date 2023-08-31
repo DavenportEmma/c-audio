@@ -1,9 +1,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdint.h>
+#include <math.h>
 
 #include "wav_header.h"
 #include "writeWav.h"
+
+#define PI 3.14159265
 
 int main(int argc, char** argv) {
     int samples = 100;
@@ -34,7 +37,12 @@ int main(int argc, char** argv) {
     int16_t* d = (int16_t*)malloc(samples * sizeof(int16_t));
 
     for(int i=0; i<samples; i++) {
-        d[i] = 0x8FFF;
+        double sample_val = sin(2*PI*i/50);
+
+        double A_sample_float = (double)sample_val*10000;
+        int16_t A_sample = (int16_t)A_sample_float;
+        printf("%d\n", A_sample);
+        d[i] = A_sample;
     }
 
     int flag = flag = writeWav(h, file_name, d, samples);
