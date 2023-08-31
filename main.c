@@ -28,11 +28,11 @@ int main(int argc, char** argv) {
         1,
         1,
         44100,
-        176400,
-        4,
+        88200,
+        2,
         16,
         "data",
-        0
+        100
     };
 
     FILE *fp;
