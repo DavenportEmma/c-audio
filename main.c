@@ -36,7 +36,7 @@ int main(int argc, char** argv) {
     };
 
     FILE *fp;
-    fp = fopen("a.wav", "w");
+    fp = fopen("a.out.wav", "w");
 
     if (fp == NULL) {
         fprintf(stderr, "\nError opened file\n");
