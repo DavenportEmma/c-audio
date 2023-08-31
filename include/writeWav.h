@@ -8,7 +8,8 @@
 int writeWav(
     WavHeader h,
     char* file_name,
-    int16_t* data
+    int16_t* data,
+    int data_len
 );
 
 #endif
