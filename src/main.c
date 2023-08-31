@@ -10,8 +10,8 @@
 
 int main(int argc, char** argv) {
     int samples = 100;
-    int sample_rate = 44100;
     short int num_channels = 1;
+    int sample_rate = 44100;
     short int bits_per_sample = 16;
     int byte_rate = sample_rate * bits_per_sample * num_channels / 8;
     short int bytes_per_sample = bits_per_sample / 8; // 2 for 16b mono
@@ -29,7 +29,7 @@ int main(int argc, char** argv) {
         bytes_per_sample,
         bits_per_sample,
         "data",
-        samples
+        samples * bytes_per_sample
     };
 
     char* file_name = "out/a.out.wav";
