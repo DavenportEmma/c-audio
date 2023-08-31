@@ -7,6 +7,11 @@
 
 int main(int argc, char** argv) {
     int samples = 100;
+    int sample_rate = 44100;
+    short int num_channels = 1;
+    short int bits_per_sample = 16;
+    int byte_rate = sample_rate * bits_per_sample * num_channels / 8;
+    short int bytes_per_sample = bits_per_sample / 8; // 2 for 16b mono
 
     WavHeader h = {
         "RIFF",
@@ -15,11 +20,11 @@ int main(int argc, char** argv) {
         "fmt\x20", //  \x20 represents the end of header
         16,
         1,
-        1,
-        44100,
-        88200,
-        2,
-        16,
+        num_channels,
+        sample_rate,
+        byte_rate,
+        bytes_per_sample,
+        bits_per_sample,
         "data",
         samples
     };
