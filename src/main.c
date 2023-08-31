@@ -21,8 +21,10 @@ int main(int argc, char** argv) {
         100
     };
 
+    char* file_name = "out/a.out.wav";
+
     FILE *fp;
-    fp = fopen("a.out.wav", "w");
+    fp = fopen(file_name, "w");
 
     if (fp == NULL) {
         fprintf(stderr, "\nError opened file\n");
