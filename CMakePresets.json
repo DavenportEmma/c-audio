@@ -16,7 +16,7 @@
     ],
     "buildPresets": [
         {
-            "name": "build-default",
+            "name": "default",
             "configurePreset": "default"
         }
     ]
