@@ -11,8 +11,9 @@ int main(int argc, char** argv) {
         short int format_type; // 1
         short int num_channels; // 2
         int sample_rate; // 44100
-        int byte_rate; // 176400
-        short int total_bytes_per_sample; // 4
+        int byte_rate; // sample rate * bits/sample * channels / 8
+        // 4410khz * 16 bits per sample * 1 channel / 8 bits per byte
+        short int total_bytes_per_sample; // 2 for 16 bit mono 
         short int bits_per_sample; // 16
         char data_start[4]; // data
         int data_len; // size of the data section
