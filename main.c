@@ -25,7 +25,7 @@ int main(int argc, char** argv) {
         "fmt\x20", //  \x20 represents the end of header
         16,
         1,
-        2,
+        1,
         44100,
         176400,
         4,
