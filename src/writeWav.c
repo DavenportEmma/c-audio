@@ -17,7 +17,7 @@ int writeWav(WavHeader header, char* file_name, int16_t* data, int data_len) {
     int flag = 0;
     flag = fwrite(&header, sizeof(header), 1, fp);
 
-    flag = fwrite(data, sizeof(data)*data_len, 1, fp);
+    flag = fwrite(data, sizeof(int16_t), data_len, fp);
 
     if (flag) {
         printf("Contents of the structure written "
