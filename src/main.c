@@ -9,7 +9,8 @@
 #define PI 3.14159265
 
 int main(int argc, char** argv) {
-    int samples = 100;
+    int freq = 200;
+    int samples = 44100;
     short int num_channels = 1;
     int sample_rate = 44100;
     short int bits_per_sample = 16;
@@ -37,15 +38,15 @@ int main(int argc, char** argv) {
     int16_t* d = (int16_t*)malloc(samples * sizeof(int16_t));
 
     for(int i=0; i<samples; i++) {
-        double sample_val = sin(2*PI*i/50);
+        double x = 2*PI*i/(sample_rate/freq);
+        double sample_val = sin(x);
 
         double A_sample_float = (double)sample_val*10000;
         int16_t A_sample = (int16_t)A_sample_float;
-        printf("%d\n", A_sample);
         d[i] = A_sample;
     }
 
-    int flag = flag = writeWav(h, file_name, d, samples);
+    int flag = writeWav(h, file_name, d, samples);
 
     free(d);
 
