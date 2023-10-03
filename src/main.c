@@ -5,6 +5,7 @@
 #include "wav_header.h"
 #include "writeWav.h"
 #include "generateSine.h"
+#include "writeCSV.h"
 
 int main(int argc, char** argv) {
     int freq = 2000;
@@ -45,6 +46,7 @@ int main(int argc, char** argv) {
     }
 
     int flag = writeWav(h, file_name, dt, samples);
+    flag = writeCSV("out/a.out.txt", dt, samples);
 
     free(d);
     free(dt);
