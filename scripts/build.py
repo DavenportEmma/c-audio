@@ -10,8 +10,7 @@ def main():
     subprocess.run([
         "cmake",
         "--build",
-        "--preset",
-        "default"
+        "out"
     ], shell=True)
 
 if __name__ == "__main__":
