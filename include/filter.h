@@ -9,6 +9,7 @@ void filter(
     float b[],
     int b_len,
     int16_t* buffer
+    int buffer_len
 );
 
 #endif
