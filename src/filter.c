@@ -3,10 +3,10 @@
 #include <stdlib.h>
 
 void filter(
-    float x[],
-    int x_len,
-    float y[],
-    int y_len,
+    float a[],
+    int a_len,
+    float b[],
+    int b_len,
     int16_t* buffer  
 ) {
     
