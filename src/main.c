@@ -7,22 +7,33 @@
 #include "generateSine.h"
 #include "writeCSV.h"
 #include "sig_descriptor.h"
+#include "generateSignals.h"
 
 int main(int argc, char** argv) {
-    int samples = 1000;
+    int samples = 44100;
     short int num_channels = 1;
     int sample_rate = 44100;
     short int bits_per_sample = 16;
     int byte_rate = sample_rate * bits_per_sample * num_channels / 8;
     short int bytes_per_sample = bits_per_sample / 8; // 2 for 16b mono
 
-    SigDescriptor s = {
-        sample_rate,
-        2000,
-        samples,
-        1000,
-        0,
-        0
+    SigDescriptor arr[3] = {
+        {
+            sample_rate,
+            220,
+            samples,
+            5000,
+            0,
+            0
+        },
+        {
+            sample_rate,
+            330,
+            samples,
+            5000,
+            0,
+            0
+        }
     };
 
     WavHeader h = {
@@ -43,18 +54,11 @@ int main(int argc, char** argv) {
 
     char* file_name = "out/a.out.wav";
 
-    int16_t* d = generateSine(s);
-
     int16_t* dt = (int16_t*)malloc(samples * sizeof(int16_t));
-
-    for(int i=0; i<samples; i++) {    
-        dt[i] = d[i];
-    }
+    generateSignals(h, arr, 3, dt);
 
     int flag = writeWav(h, file_name, dt, samples);
-    flag = writeCSV("out/a.out.txt", dt, samples);
 
-    free(d);
     free(dt);
 
     return 0;

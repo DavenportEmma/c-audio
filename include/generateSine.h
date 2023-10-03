@@ -5,8 +5,9 @@
 #include "sig_descriptor.h"
 #define PI 3.14159265
 
-int16_t* generateSine(
-    SigDescriptor s
+void generateSine(
+    SigDescriptor s,
+    int16_t *buffer
 );
 
 #endif

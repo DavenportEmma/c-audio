@@ -15,4 +15,5 @@ target_sources(${PROJECT_NAME} PUBLIC
 	${CMAKE_CURRENT_SOURCE_DIR}/src/writeWav.c
 	${CMAKE_CURRENT_SOURCE_DIR}/src/generateSine.c
 	${CMAKE_CURRENT_SOURCE_DIR}/src/writeCSV.c
+	${CMAKE_CURRENT_SOURCE_DIR}/src/generateSignals.c
 )
