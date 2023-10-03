@@ -12,6 +12,11 @@ void generateSignals(
     int16_t* buffer    
 ) {
     int num_samples = s[0].samples;
+
+    for(int i=0; i<num_samples; i++) {
+        buffer[i] = 0;
+    }
+
     int16_t* d = (int16_t*)malloc(num_samples * sizeof(int16_t));
 
     for(int i=0; i<num; i++) {

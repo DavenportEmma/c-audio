@@ -8,8 +8,8 @@
 #include "writeCSV.h"
 #include "sig_descriptor.h"
 #include "generateSignals.h"
-
-#define NUM_SIGS 4
+#include "generateSquare.h"
+#define NUM_SIGS 1
 
 int main(int argc, char** argv) {
     int samples = 1000;
@@ -35,30 +35,6 @@ int main(int argc, char** argv) {
             10000,
             0,
             0
-        },
-        {
-            sample_rate,
-            300,
-            samples,
-            3333,
-            0,
-            0
-        },
-        {
-            sample_rate,
-            500,
-            samples,
-            2000,
-            0,
-            0
-        },
-        {
-            sample_rate,
-            700,
-            samples,
-            1429,
-            0,
-            0
         }
     };
 
@@ -81,11 +57,8 @@ int main(int argc, char** argv) {
     char* file_name = "out/a.out.wav";
 
     int16_t* dt = (int16_t*)malloc(samples * sizeof(int16_t));
-    for(int i=0; i<samples; i++) {
-        dt[i] = 0;
-    }
 
-    generateSignals(h, arr, NUM_SIGS, dt);
+    // generateSignals(h, arr, NUM_SIGS, dt);
 
     int flag = writeWav(h, file_name, dt, samples);
 
