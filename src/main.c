@@ -11,7 +11,7 @@
 #define NUM_SIGS 1
 
 int main(int argc, char** argv) {
-    int samples = 10;
+    int samples = 1000;
     short int num_channels = 1;
     int sample_rate = 44100;
     short int bits_per_sample = 16;
