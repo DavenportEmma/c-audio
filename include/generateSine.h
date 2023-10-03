@@ -9,7 +9,9 @@ int16_t* generateSine(
     int sample_rate,
     int freq,
     int samples,
-    int16_t gain
+    int gain,
+    int offset,
+    float phase
 );
 
 #endif

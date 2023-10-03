@@ -34,10 +34,11 @@ int main(int argc, char** argv) {
 
     char* file_name = "out/a.out.wav";
     
-    int16_t gain = 5000;
-    int16_t offset = 0;
+    int gain = 5000;
+    int offset = 0;
+    int phase = 0;
 
-    int16_t* d = generateSine(sample_rate, freq, samples, gain);
+    int16_t* d = generateSine(sample_rate, freq, samples, gain, offset, phase);
 
     int16_t* dt = (int16_t*)malloc(samples * sizeof(int16_t));
 
