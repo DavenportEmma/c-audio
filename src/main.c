@@ -1,16 +1,14 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdint.h>
-#include <math.h>
 
 #include "wav_header.h"
 #include "writeWav.h"
-
-#define PI 3.14159265
+#include "generateSine.h"
 
 int main(int argc, char** argv) {
-    int freq = 200;
-    int samples = 44100;
+    int freq = 2000;
+    int samples = 1000;
     short int num_channels = 1;
     int sample_rate = 44100;
     short int bits_per_sample = 16;
@@ -34,21 +32,22 @@ int main(int argc, char** argv) {
     };
 
     char* file_name = "out/a.out.wav";
+    
+    int16_t gain = 5000;
+    int16_t offset = 0;
 
-    int16_t* d = (int16_t*)malloc(samples * sizeof(int16_t));
+    int16_t* d = generateSine(sample_rate, freq, samples, gain);
 
-    for(int i=0; i<samples; i++) {
-        double x = 2*PI*i/(sample_rate/freq);
-        double sample_val = sin(x);
+    int16_t* dt = (int16_t*)malloc(samples * sizeof(int16_t));
 
-        double A_sample_float = (double)sample_val*10000;
-        int16_t A_sample = (int16_t)A_sample_float;
-        d[i] = A_sample;
+    for(int i=0; i<samples; i++) {    
+        dt[i] = d[i];
     }
 
-    int flag = writeWav(h, file_name, d, samples);
+    int flag = writeWav(h, file_name, dt, samples);
 
     free(d);
+    free(dt);
 
     return 0;
 }
