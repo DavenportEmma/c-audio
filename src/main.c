@@ -32,7 +32,7 @@ int main(int argc, char** argv) {
             sample_rate,
             100,
             samples,
-            10000,
+            20000,
             0,
             0
         }
@@ -58,7 +58,7 @@ int main(int argc, char** argv) {
 
     int16_t* dt = (int16_t*)malloc(samples * sizeof(int16_t));
 
-    // generateSignals(h, arr, NUM_SIGS, dt);
+    generateSquare(arr[0], dt);
 
     int flag = writeWav(h, file_name, dt, samples);
 

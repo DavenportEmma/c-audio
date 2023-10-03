@@ -10,10 +10,8 @@ target_include_directories(${PROJECT_NAME} PUBLIC
 	${CMAKE_CURRENT_SOURCE_DIR}/include
 )
 
+file(GLOB_RECURSE SRC ${CMAKE_CURRENT_SOURCE_DIR}/src/*.c)
+
 target_sources(${PROJECT_NAME} PUBLIC
-	${CMAKE_CURRENT_SOURCE_DIR}/src/main.c
-	${CMAKE_CURRENT_SOURCE_DIR}/src/writeWav.c
-	${CMAKE_CURRENT_SOURCE_DIR}/src/generateSine.c
-	${CMAKE_CURRENT_SOURCE_DIR}/src/writeCSV.c
-	${CMAKE_CURRENT_SOURCE_DIR}/src/generateSignals.c
+	${SRC}
 )
