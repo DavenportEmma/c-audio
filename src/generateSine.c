@@ -1,6 +1,7 @@
 #include <math.h>
 #include <stdint.h>
 #include <stdlib.h>
+#include <stdio.h>
 #include "generateSine.h"
 #include "sig_descriptor.h"
 
@@ -9,7 +10,8 @@ void generateSine(
     int16_t *buffer   
 ) {
     for(int i=0; i<s.samples; i++) {
-        double x = 2*PI*i/(s.sample_rate/s.freq);
+        double x = 2*PI*(i+s.phase)/(s.sample_rate/s.freq);
+        // printf("%f\n", x);
         double sample_val = sin(x);
 
         double A_sample_float = (double)sample_val*s.gain;

@@ -9,8 +9,10 @@
 #include "sig_descriptor.h"
 #include "generateSignals.h"
 
+#define NUM_SIGS 4
+
 int main(int argc, char** argv) {
-    int samples = 44100;
+    int samples = 1000;
     short int num_channels = 1;
     int sample_rate = 44100;
     short int bits_per_sample = 16;
@@ -25,20 +27,36 @@ int main(int argc, char** argv) {
         offset
         phase
     */
-    SigDescriptor arr[3] = {
+    SigDescriptor arr[NUM_SIGS] = {
         {
             sample_rate,
-            220,
+            100,
             samples,
-            5000,
+            10000,
             0,
             0
         },
         {
             sample_rate,
-            330,
+            300,
             samples,
-            5000,
+            3333,
+            0,
+            0
+        },
+        {
+            sample_rate,
+            500,
+            samples,
+            2000,
+            0,
+            0
+        },
+        {
+            sample_rate,
+            700,
+            samples,
+            1429,
             0,
             0
         }
@@ -63,7 +81,11 @@ int main(int argc, char** argv) {
     char* file_name = "out/a.out.wav";
 
     int16_t* dt = (int16_t*)malloc(samples * sizeof(int16_t));
-    generateSignals(h, arr, 3, dt);
+    for(int i=0; i<samples; i++) {
+        dt[i] = 0;
+    }
+
+    generateSignals(h, arr, NUM_SIGS, dt);
 
     int flag = writeWav(h, file_name, dt, samples);
 
