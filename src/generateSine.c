@@ -1,5 +1,6 @@
 #include <math.h>
 #include <stdint.h>
+#include <stdlib.h>
 #include "generateSine.h"
 
 int16_t* generateSine(int sample_rate, int freq, int samples, int16_t gain) {
