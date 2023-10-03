@@ -17,6 +17,14 @@ int main(int argc, char** argv) {
     int byte_rate = sample_rate * bits_per_sample * num_channels / 8;
     short int bytes_per_sample = bits_per_sample / 8; // 2 for 16b mono
 
+    /*
+        sample rate
+        freq
+        samples
+        gain
+        offset
+        phase
+    */
     SigDescriptor arr[3] = {
         {
             sample_rate,
