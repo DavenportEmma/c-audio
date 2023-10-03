@@ -4,7 +4,6 @@
 #include <stdint.h>
 #include "sig_descriptor.h"
 #include "wav_header.h"
-#define PI 3.14159265
 
 void generateSignals(
     WavHeader h,
