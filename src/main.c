@@ -4,12 +4,10 @@
 
 #include "wav_header.h"
 #include "writeWav.h"
-#include "generateSine.h"
 #include "writeCSV.h"
 #include "sig_descriptor.h"
 #include "generateSignals.h"
-#include "generateSquare.h"
-#define NUM_SIGS 1
+#define NUM_SIGS 2
 
 int main(int argc, char** argv) {
     int samples = 1000;
@@ -32,9 +30,19 @@ int main(int argc, char** argv) {
             sample_rate,
             100,
             samples,
-            20000,
+            10000,
             0,
-            0
+            0,
+            SQUARE
+        },
+        {
+            sample_rate,
+            1000,
+            samples,
+            10000,
+            0,
+            0,
+            SINE
         }
     };
 
@@ -58,7 +66,7 @@ int main(int argc, char** argv) {
 
     int16_t* dt = (int16_t*)malloc(samples * sizeof(int16_t));
 
-    generateSquare(arr[0], dt);
+    generateSignals(h, arr, NUM_SIGS, dt);
 
     int flag = writeWav(h, file_name, dt, samples);
 
