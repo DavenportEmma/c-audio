@@ -1,7 +1,6 @@
 #include <math.h>
 #include <stdint.h>
 #include <stdlib.h>
-#include <stdio.h>
 #include "generateSine.h"
 #include "sig_descriptor.h"
 
