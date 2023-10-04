@@ -18,9 +18,9 @@ void filter(
         int xn2 = (i >= 2 ? d[i-2] : 0);
         int xn3 = (i >= 3 ? d[i-3] : 0);
 
-        int tn1 = (i >= 1 ? temp[i-1] : 0);
-        int tn2 = (i >= 2 ? temp[i-2] : 0);
-        int tn3 = (i >= 3 ? temp[i-3] : 0);
+        double tn1 = (i >= 1 ? temp[i-1] : 0);
+        double tn2 = (i >= 2 ? temp[i-2] : 0);
+        double tn3 = (i >= 3 ? temp[i-3] : 0);
 
         double a0 = f.a[0];
         double a1 = f.a[1];
