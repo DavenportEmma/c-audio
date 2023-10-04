@@ -7,8 +7,8 @@
 #define B_COEFFS 4
 
 typedef struct {
-    float a[A_COEFFS];
-    float b[B_COEFFS];
+    double a[A_COEFFS];
+    double b[B_COEFFS];
 } FilterDescriptor;
 
 void filter(

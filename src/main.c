@@ -29,9 +29,9 @@ int main(int argc, char** argv) {
     SigDescriptor arr[NUM_SIGS] = {
         {
             sample_rate,
-            100,
+            6000,
             samples,
-            1000,
+            5000,
             0,
             0,
             SINE
@@ -55,12 +55,12 @@ int main(int argc, char** argv) {
     };
 
     FilterDescriptor f = {
-        {2, 0, 0, 0},
-        {0, 0, 0, 0}
+        {-0.9461929090407919, 1, 0, 0},
+        {1, 1, 0, 0}
     };
 
     int16_t* dt = (int16_t*)malloc(samples * sizeof(int16_t));
-    int16_t* filter_out = (int16_t*)calloc(samples, samples * sizeof(int16_t));
+    int16_t* filter_out = (int16_t*)malloc(samples * sizeof(int16_t));
 
     generateSignals(h, arr, NUM_SIGS, dt);
     filter(f, dt, filter_out, samples);
