@@ -11,7 +11,7 @@
 #define NUM_SIGS 1
 
 int main(int argc, char** argv) {
-    int samples = 1000;
+    int samples = 10;
     short int num_channels = 1;
     int sample_rate = 44100;
     short int bits_per_sample = 16;
@@ -60,9 +60,24 @@ int main(int argc, char** argv) {
 
     generateSignals(h, arr, NUM_SIGS, dt);
     writeCSV("out/a.txt", dt, samples);
-    float a_coeff[3] = {-0.6320, 2.1848, -2.5430};
-    float b_coeff[4] = {1,3,3,1};
-    filter(a_coeff, 3, b_coeff, 4, dt, samples);
+
+    dt[0] = 0;
+    dt[1] = 1;
+    dt[2] = 2;
+    dt[3] = 3;
+    dt[4] = 4;
+    dt[5] = 5;
+    dt[6] = 6;
+    dt[7] = 7;
+    dt[8] = 8;
+    dt[9] = 9;
+
+    FilterDescriptor f = {
+        {0, 1, 0, 0},
+        {0, 0, 0, 0}
+    };
+
+    filter(f, dt, samples);
 
     int flag = writeWav(h, file_name, dt, samples);
 

@@ -3,11 +3,16 @@
 
 #include <stdint.h>
 
+#define A_COEFFS 4
+#define B_COEFFS 4
+
+typedef struct {
+    float a[A_COEFFS];
+    float b[B_COEFFS];
+} FilterDescriptor;
+
 void filter(
-    float a[],
-    int a_len,
-    float b[],
-    int b_len,
+    FilterDescriptor f,
     int16_t* buffer,
     int buffer_len
 );
