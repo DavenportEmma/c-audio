@@ -11,7 +11,7 @@
 #define NUM_SIGS 1
 
 int main(int argc, char** argv) {
-    int samples = 10;
+    int samples = 1000;
     short int num_channels = 1;
     int sample_rate = 44100;
     short int bits_per_sample = 16;
@@ -31,10 +31,10 @@ int main(int argc, char** argv) {
             sample_rate,
             100,
             samples,
-            10000,
+            1000,
             0,
             0,
-            SQUARE
+            SINE
         }
     };
 
@@ -54,34 +54,22 @@ int main(int argc, char** argv) {
         samples * bytes_per_sample
     };
 
-    char* file_name = "out/a.out.wav";
-
-    int16_t* dt = (int16_t*)malloc(samples * sizeof(int16_t));
-
-    generateSignals(h, arr, NUM_SIGS, dt);
-    writeCSV("out/a.txt", dt, samples);
-
-    dt[0] = 0;
-    dt[1] = 1;
-    dt[2] = 2;
-    dt[3] = 3;
-    dt[4] = 4;
-    dt[5] = 5;
-    dt[6] = 6;
-    dt[7] = 7;
-    dt[8] = 8;
-    dt[9] = 9;
-
     FilterDescriptor f = {
-        {0, 1, 0, 0},
+        {2, 0, 0, 0},
         {0, 0, 0, 0}
     };
 
-    filter(f, dt, samples);
+    int16_t* dt = (int16_t*)malloc(samples * sizeof(int16_t));
+    int16_t* filter_out = (int16_t*)calloc(samples, samples * sizeof(int16_t));
 
-    int flag = writeWav(h, file_name, dt, samples);
+    generateSignals(h, arr, NUM_SIGS, dt);
+    filter(f, dt, filter_out, samples);
+
+    int flag = writeWav(h, "out/a.wav", dt, samples);
+    flag = writeWav(h, "out/f.wav", filter_out, samples);
 
     free(dt);
+    free(filter_out);
 
     return 0;
 }
