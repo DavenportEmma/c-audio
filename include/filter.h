@@ -13,7 +13,8 @@ typedef struct {
 
 void filter(
     FilterDescriptor f,
-    int16_t* buffer,
+    int16_t* input,
+    int16_t* output,
     int buffer_len
 );
 
