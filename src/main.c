@@ -8,12 +8,12 @@
 #include "sig_descriptor.h"
 #include "generateSignals.h"
 #include "filter.h"
-#define NUM_SIGS 1
+#define NUM_SIGS 4
 
 int main(int argc, char** argv) {
-    int samples = 1000;
+    int samples = 10000;
     short int num_channels = 1;
-    int sample_rate = 44100;
+    int sample_rate = 10000;
     short int bits_per_sample = 16;
     int byte_rate = sample_rate * bits_per_sample * num_channels / 8;
     short int bytes_per_sample = bits_per_sample / 8; // 2 for 16b mono
@@ -31,11 +31,38 @@ int main(int argc, char** argv) {
             sample_rate,
             6000,
             samples,
-            5000,
+            1000,
             0,
             0,
             SINE
-        }
+        },
+        {
+            sample_rate,
+            500,
+            samples,
+            1000,
+            0,
+            0,
+            SINE
+        },
+        {
+            sample_rate,
+            2000,
+            samples,
+            1000,
+            0,
+            0,
+            SINE
+        },
+        {
+            sample_rate,
+            5000,
+            samples,
+            1000,
+            0,
+            0,
+            SINE
+        },
     };
 
     WavHeader h = {
@@ -60,16 +87,18 @@ int main(int argc, char** argv) {
     };
 
     int16_t* dt = (int16_t*)malloc(samples * sizeof(int16_t));
-    int16_t* filter_out = (int16_t*)malloc(samples * sizeof(int16_t));
+    int16_t* filtered = (int16_t*)malloc(samples * sizeof(int16_t));
 
     generateSignals(h, arr, NUM_SIGS, dt);
-    filter(f, dt, filter_out, samples);
+    writeCSV("out/a.txt", dt, samples);
+    double a_coeff[3] = {0.07069445632248525, 0, -0.07069445632248525};
+    double b_coeff[4] = {1, -0.5743424119264041, 0.8586110873550294, 0};
+    filter(a_coeff, 3, b_coeff, 4, dt, samples, filtered);
 
-    int flag = writeWav(h, "out/a.wav", dt, samples);
-    flag = writeWav(h, "out/f.wav", filter_out, samples);
+    int flag = writeWav(h, file_name, filtered, samples);
+    flag = writeWav(h, "out/unfiltered.wav", dt, samples);
 
     free(dt);
-    free(filter_out);
-
+    free(filtered);
     return 0;
 }
