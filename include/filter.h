@@ -3,14 +3,6 @@
 
 #include <stdint.h>
 
-#define A_COEFFS 4
-#define B_COEFFS 4
-
-typedef struct {
-    double a[A_COEFFS];
-    double b[B_COEFFS];
-} FilterDescriptor;
-
 void filter(
     double a[],
     int a_len,

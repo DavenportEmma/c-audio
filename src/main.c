@@ -81,10 +81,7 @@ int main(int argc, char** argv) {
         samples * bytes_per_sample
     };
 
-    FilterDescriptor f = {
-        {-0.9461929090407919, 1, 0, 0},
-        {1, 1, 0, 0}
-    };
+    char* file_name = "out/a.out.wav";
 
     int16_t* dt = (int16_t*)malloc(samples * sizeof(int16_t));
     int16_t* filtered = (int16_t*)malloc(samples * sizeof(int16_t));
