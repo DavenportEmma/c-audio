@@ -21,6 +21,14 @@
                 "APP_DIR": "applications/iir_bandpass"
             },
             "inherits": "default"
+        },
+        {
+            "name": "envelope-detection",
+            "binaryDir": "build-env_det",
+            "cacheVariables": {
+                "APP_DIR": "applications/envelope_detection"
+            },
+            "inherits": "default"
         }
     ]
 }
