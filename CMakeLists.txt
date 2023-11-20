@@ -14,4 +14,5 @@ file(GLOB_RECURSE SRC ${CMAKE_CURRENT_SOURCE_DIR}/src/*.c)
 
 target_sources(${PROJECT_NAME} PUBLIC
 	${SRC}
+	${APP_DIR}/main.c
 )
