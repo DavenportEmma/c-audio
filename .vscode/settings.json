@@ -1,6 +1,7 @@
 {
     "files.associations": {
         "wav_header.h": "c",
-        "writecsv.h": "c"
+        "writecsv.h": "c",
+        "writewav.h": "c"
     }
 }
