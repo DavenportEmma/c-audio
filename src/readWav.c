@@ -3,10 +3,11 @@
 
 #include "readWav.h"
 #include "wav_header.h"
+#include "writeCSV.h"
 
 int getMetadata(char* file_name, WavHeader* h) {
     FILE *fp;
-    fp = fopen("audio/AM.wav", "rb");
+    fp = fopen(file_name, "rb");
 
     if(fp == NULL) {
         fprintf(stderr, "\nError opening file\n");
@@ -18,7 +19,7 @@ int getMetadata(char* file_name, WavHeader* h) {
 }
 
 int extractAudioData(
-    char* file_name, WavHeader* h, int16_t* buffer, int buffer_len
+    char* file_name, WavHeader* h, int8_t* buffer, int buffer_len
 ) {
     FILE *fp;
     fp = fopen("audio/AM.wav", "rb");
@@ -29,7 +30,7 @@ int extractAudioData(
     }
 
     fread(h, sizeof(WavHeader), 1, fp);
-    fread(buffer, sizeof(int16_t), buffer_len, fp);
+    fread(buffer, sizeof(int8_t), buffer_len, fp);
 
     return 0;
 }
