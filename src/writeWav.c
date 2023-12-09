@@ -10,7 +10,7 @@ int writeWav(WavHeader header, char* file_name, int16_t* data, int data_len) {
     fp = fopen(file_name, "wb");
 
     if (fp == NULL) {
-        fprintf(stderr, "\nError opened file\n");
+        fprintf(stderr, "\nError opening file\n");
         exit(1);
     }
 
