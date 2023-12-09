@@ -18,15 +18,15 @@
             "name": "iir-bandpass",
             "binaryDir": "build-iir-bandpass",
             "cacheVariables": {
-                "APP_DIR": "applications/iir_bandpass"
+                "APP_DIR": "applications/iir-bandpass"
             },
             "inherits": "default"
         },
         {
             "name": "envelope-detection",
-            "binaryDir": "build-env_det",
+            "binaryDir": "build-envelope-detection",
             "cacheVariables": {
-                "APP_DIR": "applications/envelope_detection"
+                "APP_DIR": "applications/envelope-detection"
             },
             "inherits": "default"
         }
