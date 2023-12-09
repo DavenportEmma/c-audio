@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.18)
 
-project(c-audio C)
+project(a C)
 
 add_executable(${PROJECT_NAME})
 
