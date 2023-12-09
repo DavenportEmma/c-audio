@@ -1,14 +1,15 @@
+import sys
 import matplotlib.pyplot as plt
 
 def main():
     data = []
-    with open('out/a.out.txt') as f:
+    with open(sys.argv[1]) as f:
         lines = f.readlines()
         for line in lines:
-            data.append(line)
+            data.append(int(line))
 
     plt.plot(data)
-    plt.plot(data, "g*")
+    plt.plot(data, "-")
     plt.show()
 
 if __name__ == "__main__":
