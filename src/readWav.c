@@ -15,6 +15,7 @@ int getMetadata(char* file_name, WavHeader* h) {
     }
 
     fread(h, sizeof(WavHeader), 1, fp);
+    fclose(fp);
     return 0;
 }
 
@@ -29,8 +30,22 @@ int extractAudioData(
         exit(1);
     }
 
-    fread(h, sizeof(WavHeader), 1, fp);
-    fread(buffer, sizeof(int8_t), buffer_len, fp);
+    int flag = fread(h, sizeof(WavHeader), 1, fp);
+    printf("%i\n", ferror(fp));
+    flag = fread(buffer, sizeof(int8_t), buffer_len, fp);
+    printf("%i\n", ferror(fp));
 
+
+    if(ferror(fp)) {
+        printf("ferror %i\n", ferror(fp));
+    }
+
+    if(feof(fp)) {
+        printf("eof\n");
+    } else {
+        printf("not eof\n");
+    }
+
+    fclose(fp);
     return 0;
 }
