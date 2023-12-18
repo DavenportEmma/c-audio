@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdint.h>
+#include <math.h>
 
 #include "readWav.h"
 #include "wav_header.h"
@@ -20,34 +21,34 @@ int main(int argc, char** argv) {
 
     int flag = getMetadata("audio/AM.wav", h);
 
-    // printf("file_type %s\n", h->file_type);
-    // printf("file_size %i\n", h->file_size);
-    // printf("file_type_header %s\n", h->file_type_header);
-    // printf("format_chunk_marker %s\n", h->format_chunk_marker);
-    // printf("format_data_len %i\n", h->format_data_len);
-    // printf("format_type %i\n", h->format_type);
-    // printf("num_channels %i\n", h->num_channels);
-    // printf("sample_rate %i\n", h->sample_rate);
-    // printf("byte_rate %i\n", h->byte_rate);
-    // printf("total_bytes_per_sample %i\n", h->total_bytes_per_sample);
-    // printf("bits_per_sample %i\n", h->bits_per_sample);
-    // printf("data_start %s\n", h->data_start);
-    // printf("data_len %i\n", h->data_len);
-
-    int8_t* buffer = (int8_t*)malloc(h->data_len);
+    uint8_t* buffer = (uint8_t*)malloc(h->data_len);
+    float* f_buffer = (float*)malloc(h->data_len);
 
     extractAudioData("audio/AM.wav", h, buffer, h->data_len);
 
-    int16_t* buffer2 = (int16_t*)malloc(h->data_len * 2);
+    // uint8_t max = (uint8_t)pow(2, h->bits_per_sample);
+    // double _halfway = pow(2, h->bits_per_sample) / 2;
+    // uint8_t halfway = (uint8_t)_halfway;
 
     for(int i = 0; i < h->data_len; i++) {
-        buffer2[i] = (int16_t)buffer[i];
-        printf("%i\n", buffer2[i]);
+    //     uint8_t v;
+    //     if(buffer[i] >= halfway) {
+    //         v = buffer[i] - halfway;
+    //     } else {
+    //         v = max - buffer[i] - halfway;
+    //     }
+
+    //     buffer[i] = v;
+        // printf("%d\n", buffer[i]);
+        // f_buffer[i] = halfway / buffer[i];
+        // float f = (float)buffer[i] / (float)halfway;
+        // printf("%f = %i / %i\n", f, buffer[i], halfway);
     }
 
-    writeCSV("build-envelope-detection/a.txt", buffer2, h->data_len);
-
+    writeCSV_uint8("build-envelope-detection/a.txt", buffer, h->data_len);
+    
+    free(h);
     free(buffer);
-    free(buffer2);
+    free(f_buffer);
     return 0;
 }
