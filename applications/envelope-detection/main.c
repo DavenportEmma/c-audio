@@ -26,19 +26,19 @@ int main(int argc, char** argv) {
 
     extractAudioData("audio/AM.wav", h, buffer, h->data_len);
 
-    // uint8_t max = (uint8_t)pow(2, h->bits_per_sample);
-    // double _halfway = pow(2, h->bits_per_sample) / 2;
-    // uint8_t halfway = (uint8_t)_halfway;
+    uint8_t max = (uint8_t)pow(2, h->bits_per_sample);
+    double _halfway = pow(2, h->bits_per_sample) / 2;
+    uint8_t halfway = (uint8_t)_halfway;
 
     for(int i = 0; i < h->data_len; i++) {
-    //     uint8_t v;
-    //     if(buffer[i] >= halfway) {
-    //         v = buffer[i] - halfway;
-    //     } else {
-    //         v = max - buffer[i] - halfway;
-    //     }
+        uint8_t v;
+        if(buffer[i] >= halfway) {
+            v = buffer[i] - halfway;
+        } else {
+            v = max - buffer[i] - halfway;
+        }
 
-    //     buffer[i] = v;
+        buffer[i] = v;
         // printf("%d\n", buffer[i]);
         // f_buffer[i] = halfway / buffer[i];
         // float f = (float)buffer[i] / (float)halfway;
