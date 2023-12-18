@@ -15,4 +15,11 @@ int writeCSV_uint8(
     int data_len
 );
 
+
+int writeCSV_normalised(
+    char* file_name,
+    float* data,
+    int data_len
+);
+
 #endif
