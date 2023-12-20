@@ -12,7 +12,7 @@ int getMetadata(
 int extractAudioData(
     char* file_name,
     int16_t* buffer,
-    int buffer_len
+    int samples
 );
 
 #endif
