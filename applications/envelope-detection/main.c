@@ -18,37 +18,42 @@ int main(int argc, char** argv) {
     */
 
     WavHeader *h = (WavHeader*)malloc(sizeof(WavHeader));
-
+    
     int flag = getMetadata("audio/AM.wav", h);
+    int samples = h->data_len / h->total_bytes_per_sample;
 
-    uint8_t* buffer = (uint8_t*)malloc(h->data_len);
-    float* f_buffer = (float*)malloc(h->data_len);
+    int16_t* buffer = (int16_t*)malloc(h->data_len);
 
-    extractAudioData("audio/AM.wav", h, buffer, h->data_len);
+    extractAudioData("audio/AM.wav", buffer, samples);
 
-    uint8_t max = (uint8_t)pow(2, h->bits_per_sample);
-    double _halfway = pow(2, h->bits_per_sample) / 2;
-    uint8_t halfway = (uint8_t)_halfway;
+    double bps = h->bits_per_sample;
+    double max_signed = pow(2, bps) / 2;
 
-    for(int i = 0; i < h->data_len; i++) {
-        uint8_t v;
-        if(buffer[i] >= halfway) {
-            v = buffer[i] - halfway;
-        } else {
-            v = max - buffer[i] - halfway;
-        }
+    FILE *fp;
+    fp = fopen("build-envelope-detection/a.txt", "wb");
 
-        buffer[i] = v;
-        // printf("%d\n", buffer[i]);
-        // f_buffer[i] = halfway / buffer[i];
-        // float f = (float)buffer[i] / (float)halfway;
-        // printf("%f = %i / %i\n", f, buffer[i], halfway);
+    if (fp == NULL) {
+        fprintf(stderr, "\nError opening file\n");
+        exit(1);
     }
 
-    writeCSV_uint8("build-envelope-detection/a.txt", buffer, h->data_len);
+    float* f_buffer = (float*)malloc(h->data_len);
+
+    for(int i = 0; i < samples; i++) {
+        float v = (float)buffer[i];
+        if(v < 0) {
+            v = v * -1;
+        }
+
+        float v_norm = v/max_signed;
+        f_buffer[i] = v_norm;
+    }
+    fclose(fp);
     
+    
+
     free(h);
-    free(buffer);
     free(f_buffer);
+    free(buffer);
     return 0;
 }
