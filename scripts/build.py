@@ -1,16 +1,17 @@
 import subprocess
+import sys
 
 def main():
     subprocess.run([
         "cmake",
         "--preset",
-        "default"
+        sys.argv[1]
     ], shell=True)
 
     subprocess.run([
         "cmake",
         "--build",
-        "out"
+        f"build-{sys.argv[1]}"
     ], shell=True)
 
 if __name__ == "__main__":
