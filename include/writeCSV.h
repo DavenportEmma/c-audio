@@ -9,13 +9,6 @@ int writeCSV(
     int data_len
 );
 
-int writeCSV_uint8(
-    char* file_name,
-    uint8_t* data,
-    int data_len
-);
-
-
 int writeCSV_normalised(
     char* file_name,
     float* data,
