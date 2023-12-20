@@ -11,8 +11,7 @@ int getMetadata(
 
 int extractAudioData(
     char* file_name,
-    WavHeader* h,
-    int8_t* buffer,
+    int16_t* buffer,
     int buffer_len
 );
 
