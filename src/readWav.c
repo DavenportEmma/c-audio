@@ -20,30 +20,32 @@ int getMetadata(char* file_name, WavHeader* h) {
 }
 
 int extractAudioData(
-    char* file_name, WavHeader* h, int8_t* buffer, int buffer_len
+    char* file_name, int16_t* buffer, int samples
 ) {
     FILE *fp;
-    fp = fopen("audio/AM.wav", "rb");
+    fp = fopen(file_name, "rb");
 
     if(fp == NULL) {
         fprintf(stderr, "\nError opening file\n");
         exit(1);
     }
 
-    int flag = fread(h, sizeof(WavHeader), 1, fp);
-    printf("%i\n", ferror(fp));
-    flag = fread(buffer, sizeof(int8_t), buffer_len, fp);
-    printf("%i\n", ferror(fp));
+    if(fseek(fp, sizeof(WavHeader), SEEK_SET) != 0) {
+        fprintf(stderr, "\nError seeking location in file\n");
+        exit(1);
+    }
 
 
+    int items_read = fread(buffer, sizeof(int16_t), samples, fp);
+    
     if(ferror(fp)) {
-        printf("ferror %i\n", ferror(fp));
+        fprintf(stderr, "\nError reading from file\n");
+        exit(1);
     }
 
     if(feof(fp)) {
-        printf("eof\n");
-    } else {
-        printf("not eof\n");
+        fprintf(stderr, "\nError closing file\n");
+        exit(1);
     }
 
     fclose(fp);
