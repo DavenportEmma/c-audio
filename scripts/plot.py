@@ -6,7 +6,7 @@ def main():
     with open(sys.argv[1]) as f:
         lines = f.readlines()
         for line in lines:
-            data.append(int(line))
+            data.append(float(line))
 
     plt.plot(data)
     plt.plot(data, "-")
