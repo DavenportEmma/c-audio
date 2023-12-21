@@ -28,10 +28,10 @@ int main(int argc, char** argv) {
     // filter stuff
     #define A_LEN 3
     #define B_LEN 3
-    float a_coeff[A_LEN] = {1, -1.95557824, 0.95654368};
-    float b_coeff[B_LEN] = {0.00024136, 0.00048272, 0.00024136};
-    int16_t* x_buff = (int16_t*)calloc(A_LEN, sizeof(int16_t));
-    int16_t* y_buff = (int16_t*)calloc(B_LEN, sizeof(int16_t));
+    float a_coeff[A_LEN] = {1, -1.99597018, 0.99597828};
+    float b_coeff[B_LEN] = {2.02585370e-06, 4.05170741e-06, 2.02585370e-06};
+    float* x_buff = (float*)calloc(A_LEN, sizeof(float));
+    float* y_buff = (float*)calloc(B_LEN, sizeof(float));
     
     FILE *fp;
     fp = fopen("build-procedural-envelope/a.wav", "wb");
