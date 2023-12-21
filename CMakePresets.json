@@ -29,6 +29,14 @@
                 "APP_DIR": "applications/envelope-detection"
             },
             "inherits": "default"
+        },
+        {
+            "name": "procedural-envelope",
+            "binaryDir": "build-procedural-envelope",
+            "cacheVariables": {
+                "APP_DIR": "applications/procedural-envelope"
+            },
+            "inherits": "default"
         }
     ]
 }
