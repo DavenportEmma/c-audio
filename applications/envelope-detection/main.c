@@ -8,6 +8,7 @@
 #include "generateSignal.h"
 #include "writeWav.h"
 #include "writeCSV.h"
+#include "filter.h"
 
 int main(int argc, char** argv) {
     /*
@@ -23,37 +24,37 @@ int main(int argc, char** argv) {
     int samples = h->data_len / h->total_bytes_per_sample;
 
     int16_t* buffer = (int16_t*)malloc(h->data_len);
-
+    int16_t* filtered = (int16_t*)malloc(h->data_len);
     extractAudioData("audio/AM.wav", buffer, samples);
 
-    double bps = h->bits_per_sample;
-    double max_signed = pow(2, bps) / 2;
+    for(int i = 0; i < samples; i++) {
+        if(buffer[i] < 0) {
+            buffer[i] = abs(buffer[i]);
+        }
+    }
+
+    double a_coeff[3] = {1, -1.95557824, 0.95654368};
+    double b_coeff[3] = {0.00024136, 0.00048272, 0.00024136};
+
+    filter(
+        a_coeff,
+        b_coeff,
+        buffer,
+        samples,
+        filtered
+    );
 
     FILE *fp;
     fp = fopen("build-envelope-detection/a.txt", "wb");
-
-    if (fp == NULL) {
-        fprintf(stderr, "\nError opening file\n");
-        exit(1);
-    }
-
-    float* f_buffer = (float*)malloc(h->data_len);
-
     for(int i = 0; i < samples; i++) {
-        float v = (float)buffer[i];
-        if(v < 0) {
-            v = v * -1;
-        }
-
-        float v_norm = v/max_signed;
-        f_buffer[i] = v_norm;
+        fprintf(fp, "%i\n", filtered[i]);
     }
     fclose(fp);
-    
-    
 
+
+
+    free(filtered);
     free(h);
-    free(f_buffer);
     free(buffer);
     return 0;
 }
