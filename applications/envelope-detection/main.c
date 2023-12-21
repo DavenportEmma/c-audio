@@ -44,17 +44,33 @@ int main(int argc, char** argv) {
         filtered
     );
 
+    float* env_norm = (float*)malloc(samples * sizeof(float));
+    float max_signed = pow(2, h->bits_per_sample) / 2;
+
+    
+    for(int i = 0; i < samples; i++) {
+        float f = (float)filtered[i];
+        env_norm[i] = f/max_signed;
+
+    }
+
+    extractAudioData("audio/sin.wav", buffer, samples);
+    
     FILE *fp;
     fp = fopen("build-envelope-detection/a.txt", "wb");
     for(int i = 0; i < samples; i++) {
-        fprintf(fp, "%i\n", filtered[i]);
+        buffer[i] = buffer[i] * env_norm[i];
+        fprintf(fp, "%i\n", buffer[i]);
     }
+
     fclose(fp);
 
 
+    printf("Finished\n");
 
     free(filtered);
     free(h);
     free(buffer);
+    free(env_norm);
     return 0;
 }
