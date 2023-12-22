@@ -7,6 +7,7 @@ add_executable(${PROJECT_NAME})
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -g -std=gnu11")
 
 target_include_directories(${PROJECT_NAME} PUBLIC
+	${CMAKE_BINARY_DIR}
 	${CMAKE_CURRENT_SOURCE_DIR}/include
 )
 
