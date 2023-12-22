@@ -8,7 +8,7 @@
             "name": "Launch",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${workspaceFolder}/build-envelope-detection/a.exe",
+            "program": "${workspaceFolder}/build-vocoder/a.exe",
             "cwd": "${workspaceFolder}",
             "MIMode": "gdb",
             "miDebuggerPath": "C:/MinGW/bin/gdb.exe",
