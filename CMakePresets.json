@@ -37,6 +37,14 @@
                 "APP_DIR": "applications/procedural-envelope"
             },
             "inherits": "default"
+        },
+        {
+            "name": "vocoder",
+            "binaryDir": "build-vocoder",
+            "cacheVariables": {
+                "APP_DIR": "applications/vocoder"
+            },
+            "inherits": "default"
         }
     ]
 }
