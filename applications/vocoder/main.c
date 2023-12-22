@@ -90,19 +90,15 @@ int main(int argc, char** argv) {
 
             for(int x = B_LEN - 1; x > 0; x--) {
                 // shift input data buffer for bandpass stage
-                // fd->x[x] = fd->x[x-1];
                 c_buff->x[x] = c_buff->x[x-1];
                 s_buff->x[x] = s_buff->x[x-1];
 
                 // multiply data by coeff and update output
-                // y0 += fd->x[x] * fd->b[x];
                 yc += c_buff->x[x] * fd->b[x];  
                 ys += s_buff->x[x] * fd->b[x];
             }
 
             // read new data into buffer
-            // fd->x[0] = *c;
-            // y0 += fd->x[0] * fd->b[0];
             c_buff->x[0] = *c;
             s_buff->x[0] = *s;
 
@@ -111,26 +107,18 @@ int main(int argc, char** argv) {
             
             for(int y = A_LEN - 1; y > 0; y--) {
                 // shift output data buffer
-                // fd->y[y] = fd->y[y-1];
                 c_buff->y[y] = c_buff->y[y-1];
                 s_buff->y[y] = s_buff->y[y-1];
 
                 // multiple data by coeff and update output
-                // y0 -= fd->y[y] * fd->a[y];
                 yc -= c_buff->y[y] * fd->a[y];
                 ys -= s_buff->y[y] * fd->a[y];
             }
 
             // read new data into buffer
-            // fd->y[0] = y0;
             c_buff->y[0] = yc;
             s_buff->y[0] = ys;
 
-            // if(i == 10) {
-            //     int16_t o = yc;
-            //     int16_t* ptr = &o;
-            //     fwrite(ptr, sizeof(int16_t), 1, out);
-            // }
     /**************************************************************************/
     /*                   envelope generator                                   */
     /**************************************************************************/
@@ -156,6 +144,7 @@ int main(int argc, char** argv) {
             float sample_gain = yenv/max_signed;
             float modulated_band = yc * sample_gain;
 
+            // need to look into this business
             if(i != 0 &&
             i != 1 &&
             i != 2 &&
