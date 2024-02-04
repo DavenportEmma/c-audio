@@ -9,26 +9,38 @@ def mel(f):
 def freq(m):
     return 700 * (pow(10, (m/2595)) - 1)
 
-def coeffs(num_bands, spread, passband):
+def coeffs(num_bands, m_max, f_max, spread, order):
     coeffs = []
     for i in range(num_bands):
-        m_centre = spread * i
-        mc0 = m_centre - passband
-        fc0 = freq(mc0)
-        if(fc0 < 0):
-            fc0 = 1
+        m_centre = (m_max/num_bands) * (i + 1)
 
-        mc1 = m_centre + passband
+        mc0 = m_centre - spread
+        mc1 = m_centre + spread
+
+        fc0 = freq(mc0)
         fc1 = freq(mc1)
 
+        print(fc0, fc1)
+
+        # f_centre = freq(m_centre)
+        # passband0 = mel(f_centre - spread)
+        # passband1 = mel(f_centre + spread)
+
+        # mc0 = m_centre - passband0
+        # fc0 = freq(passband0)
+
+        # mc1 = m_centre + passband1
+        # fc1 = freq(passband1)
+
         coeffs.append(getCoeffs(
-            2,
+            order,
             44100,
             [fc0, fc1],
             "bandpass"
         ))
 
     return coeffs
+
 def compileFilterDescriptor(coeffs_arr):
     cs = "\nFilterDescriptor f_arr[NUM_BANDS] = {\n"
 
@@ -49,21 +61,17 @@ def compileFilterDescriptor(coeffs_arr):
     cs += "};"
     return cs
 
-def main(args):
-    num_bands = 40
-    f_max = 12000
+def config(args):
+    num_bands = args.num_filters
+    f_max = args.f_max
     m_max = mel(f_max)
 
-    spread = m_max / num_bands
-
-    passband = spread/2 - 20
-
-    coeffs_arr = coeffs(num_bands, spread, passband)
+    coeffs_arr = coeffs(num_bands, m_max, f_max, args.spread, args.filter_order)
     
-    if(not os.path.isdir(args.b)):
-        os.mkdir(args.b)
+    if(not os.path.isdir(args.build_dir)):
+        os.mkdir(args.build_dir)
 
-    with open(f"{args.b}/config.h", 'w') as f:
+    with open(f"{args.build_dir}/config.h", 'w') as f:
         a_len = len(coeffs_arr[0]['a'])
         b_len = len(coeffs_arr[0]['b'])
         f.write(f"""#ifndef CONFIG_H
@@ -77,6 +85,9 @@ def main(args):
 
         f.write("\n#endif")
 
+
+def main(args):
+    config(args)
     return 0
 
 if __name__ == "__main__":
@@ -84,15 +95,38 @@ if __name__ == "__main__":
 
     parser.add_argument(
         '-b',
+        '--build-dir',
         type=str,
         help="build directory"
+    )
+    
+    parser.add_argument(
+        '-fm',
+        '--f-max',
+        type=int,
+        help='max frequency'
+    )
+
+    parser.add_argument(
+        '-s',
+        '--spread',
+        type=int,
+        help='spread'
     )
 
     parser.add_argument(
         '-n',
+        '--num-filters',
         type=int,
         help='number of filters'
     )
-    
+
+    parser.add_argument(
+        '-o',
+        '--filter-order',
+        type=int,
+        help='filter order'
+    )
+
     args = parser.parse_args()
     main(args)
