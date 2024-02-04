@@ -2,6 +2,7 @@
     "files.associations": {
         "wav_header.h": "c",
         "writecsv.h": "c",
-        "writewav.h": "c"
+        "writewav.h": "c",
+        "filter.h": "c"
     }
 }
