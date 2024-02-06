@@ -144,16 +144,10 @@ int main(int argc, char** argv) {
             float sample_gain = yenv/max_signed;
             float modulated_band = yc * sample_gain;
 
-            // need to look into this business
-            if(i != 0 &&
-            i != 1 &&
-            i != 2 &&
-            i != 3
-            ) {
-                modulated_sample += modulated_band;
-            }
+            modulated_sample += modulated_band;
         }
-        int16_t o = modulated_sample * 5;
+
+        int16_t o = (int16_t)modulated_sample * 5;
         int16_t* ptr = &o;
         fwrite(ptr, sizeof(int16_t), 1, out);
     }
