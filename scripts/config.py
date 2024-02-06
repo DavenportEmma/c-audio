@@ -9,10 +9,10 @@ def mel(f):
 def freq(m):
     return 700 * (pow(10, (m/2595)) - 1)
 
-def coeffs(num_bands, m_max, f_max, spread, order):
+def coeffs(num_bands, m_max, m_min, spread, order):
     coeffs = []
     for i in range(num_bands):
-        m_centre = (m_max/num_bands) * (i + 1)
+        m_centre = ((m_max-m_min)/num_bands) * (i + 1)
 
         mc0 = m_centre - spread
         mc1 = m_centre + spread
@@ -65,8 +65,10 @@ def config(args):
     num_bands = args.num_filters
     f_max = args.f_max
     m_max = mel(f_max)
+    f_min = args.f_min
+    m_min = mel(f_min)
 
-    coeffs_arr = coeffs(num_bands, m_max, f_max, args.spread, args.filter_order)
+    coeffs_arr = coeffs(num_bands, m_max, m_min, args.spread, args.filter_order)
     
     if(not os.path.isdir(args.build_dir)):
         os.mkdir(args.build_dir)
@@ -105,6 +107,13 @@ if __name__ == "__main__":
         '--f-max',
         type=int,
         help='max frequency'
+    )
+
+    parser.add_argument(
+        '-fmin',
+        '--f-min',
+        type=int,
+        help='minimum frequency'
     )
 
     parser.add_argument(
