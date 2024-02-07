@@ -39,14 +39,14 @@ WavHeader compileHeader(
 int main(int argc, char** argv) {
     int flag = 0;
 
-    FILE *carrier;
-    carrier = fopen("audio/untitled.wav", "rb");
-    flag = fseek(carrier, sizeof(WavHeader), SEEK_SET);
+    FILE *carrier_fp;
+    carrier_fp = fopen("audio/untitled.wav", "rb");
+    flag = fseek(carrier_fp, sizeof(WavHeader), SEEK_SET);
 
-    FILE *signal;
+    FILE *signal_fp;
     WavHeader *h_in = (WavHeader*)malloc(sizeof(WavHeader));
-    signal = fopen("audio/voice.wav", "rb");
-    fread(h_in, sizeof(WavHeader), 1, signal);
+    signal_fp = fopen("audio/voice.wav", "rb");
+    fread(h_in, sizeof(WavHeader), 1, signal_fp);
 
     if(flag) {
         fprintf(stderr, "Error initialising audio stream\n");
@@ -59,10 +59,10 @@ int main(int argc, char** argv) {
     fwrite(&h, sizeof(h), 1, out);
 
     // allocate memory for carrier and signal audio data
-    int16_t* c = (int16_t*)malloc(sizeof(int16_t));
-    int16_t* s = (int16_t*)malloc(sizeof(int16_t));
+    int16_t* carrier_sample = (int16_t*)malloc(sizeof(int16_t));
+    int16_t* signal_sample = (int16_t*)malloc(sizeof(int16_t));
 
-    // allocate memory for filter buffers
+    // allocate memory for filter buffers to store input and output samples
     FilterBuffer* c_buff_arr = (FilterBuffer*)calloc(NUM_BANDS, sizeof(FilterBuffer));
     FilterBuffer* s_buff_arr = (FilterBuffer*)calloc(NUM_BANDS, sizeof(FilterBuffer));
     FilterBuffer* env_buff_arr = (FilterBuffer*)calloc(NUM_BANDS, sizeof(FilterBuffer));
@@ -73,76 +73,77 @@ int main(int argc, char** argv) {
         {2.02585370e-06, 4.05170741e-06, 2.02585370e-06,0,0},
     };
 
-    while(feof(carrier) == 0 && feof(signal) == 0) {        
-        fread(c, sizeof(int16_t), 1, carrier);
-        fread(s, sizeof(int16_t), 1, signal);
+    while(feof(carrier_fp) == 0 && feof(signal_fp) == 0) {        
+        fread(carrier_sample, sizeof(int16_t), 1, carrier_fp);
+        fread(signal_sample, sizeof(int16_t), 1, signal_fp);
 
         float modulated_sample = 0;
 
         for(int i = 0; i < NUM_BANDS; i++) {
+            // get current filter coefficients from config.h
             FilterDescriptor* fd = &f_arr[i];
-            FilterBuffer* c_buff = &c_buff_arr[i];
-            FilterBuffer* s_buff = &s_buff_arr[i];
+            FilterBuffer* carrier_buff = &c_buff_arr[i];
+            FilterBuffer* signal_buff = &s_buff_arr[i];
             FilterBuffer* env_buff = &env_buff_arr[i];
 
-            float yc = 0;
-            float ys = 0;
+            float carrier_out = 0;
+            float signal_out = 0;
 
             for(int x = B_LEN - 1; x > 0; x--) {
                 // shift input data buffer for bandpass stage
-                c_buff->x[x] = c_buff->x[x-1];
-                s_buff->x[x] = s_buff->x[x-1];
+                carrier_buff->x[x] = carrier_buff->x[x-1];
+                signal_buff->x[x] = signal_buff->x[x-1];
 
                 // multiply data by coeff and update output
-                yc += c_buff->x[x] * fd->b[x];  
-                ys += s_buff->x[x] * fd->b[x];
+                carrier_out += carrier_buff->x[x] * fd->b[x];  
+                signal_out += signal_buff->x[x] * fd->b[x];
             }
 
             // read new data into buffer
-            c_buff->x[0] = *c;
-            s_buff->x[0] = *s;
+            carrier_buff->x[0] = *carrier_sample;
+            signal_buff->x[0] = *signal_sample;
 
-            yc += c_buff->x[0] * fd->b[0];
-            ys += s_buff->x[0] * fd->b[0];
+            carrier_out += carrier_buff->x[0] * fd->b[0];
+            signal_out += signal_buff->x[0] * fd->b[0];
             
             for(int y = A_LEN - 1; y > 0; y--) {
                 // shift output data buffer
-                c_buff->y[y] = c_buff->y[y-1];
-                s_buff->y[y] = s_buff->y[y-1];
+                carrier_buff->y[y] = carrier_buff->y[y-1];
+                signal_buff->y[y] = signal_buff->y[y-1];
 
                 // multiple data by coeff and update output
-                yc -= c_buff->y[y] * fd->a[y];
-                ys -= s_buff->y[y] * fd->a[y];
+                carrier_out -= carrier_buff->y[y] * fd->a[y];
+                signal_out -= signal_buff->y[y] * fd->a[y];
             }
 
             // read new data into buffer
-            c_buff->y[0] = yc;
-            s_buff->y[0] = ys;
+            carrier_buff->y[0] = carrier_out;
+            signal_buff->y[0] = signal_out;
 
     /**************************************************************************/
     /*                   envelope generator                                   */
     /**************************************************************************/
 
-            float yenv = 0;
+            float env_out = 0;
 
             for(int x = B_LEN - 1; x > 0; x--) {
                 env_buff->x[x] = env_buff->x[x-1];
-                yenv += env_buff->x[x] * lp.b[x];  
+                env_out += env_buff->x[x] * lp.b[x];  
             }
 
-            env_buff->x[0] = fabs(ys) * 10;
-            yenv += env_buff->x[0] * lp.b[0];
+            env_buff->x[0] = fabs(signal_out) * 10;
+            env_out += env_buff->x[0] * lp.b[0];
             
             for(int y = A_LEN - 1; y > 0; y--) {
                 env_buff->y[y] = env_buff->y[y-1];
-                yenv -= env_buff->y[y] * lp.a[y];
+                env_out -= env_buff->y[y] * lp.a[y];
             }
 
-            env_buff->y[0] = yenv;
+            env_buff->y[0] = env_out;
 
             float max_signed = pow(2, 16) / 2;
-            float sample_gain = yenv/max_signed;
-            float modulated_band = yc * sample_gain;
+            float sample_gain = env_out/max_signed;
+            float modulated_band = carrier_out * sample_gain;
 
             modulated_sample += modulated_band;
         }
@@ -153,15 +154,15 @@ int main(int argc, char** argv) {
     }
 
     printf("Closing files\n");
-    free(c);
-    free(s);
+    free(carrier_sample);
+    free(signal_sample);
     free(h_in);
     free(c_buff_arr);
     free(s_buff_arr);
     free(env_buff_arr);
     fclose(out);
-    fclose(carrier);
-    fclose(signal);
+    fclose(carrier_fp);
+    fclose(signal_fp);
 
     return 0;
 }
